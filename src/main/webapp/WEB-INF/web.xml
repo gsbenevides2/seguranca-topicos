@@ -4,4 +4,34 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+
+         <filter>
+            <filter-name>RegistrarLog</filter-name>
+            <filter-class>seguranca.usuario.web.RegistrarLog</filter-class>
+        </filter>
+        <filter-mapping>
+            <filter-name>RegistrarLog</filter-name>
+            <url-pattern>/*</url-pattern>
+        </filter-mapping>
+        <filter>
+            <filter-name>GarantirAutenticacao</filter-name>
+            <filter-class>seguranca.usuario.web.GarantirAutenticacao</filter-class>
+        </filter>
+        <filter-mapping>
+            <filter-name>GarantirAutenticacao</filter-name>
+            <url-pattern>/restrito/*</url-pattern>
+        </filter-mapping>
+        <servlet>
+            <servlet-name>AcessarSistema</servlet-name>
+            <servlet-class>seguranca.usuario.web.AcessarSistema</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>AcessarSistema</servlet-name>
+            <url-pattern>/acessar</url-pattern>
+        </servlet-mapping>
+        <session-config>
+            <session-timeout>
+                30
+            </session-timeout>
+        </session-config>
 </web-app>
