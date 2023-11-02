@@ -27,3 +27,9 @@ Os shells scripts <code>start.sh</code> são responsáveis por instalar e prepar
 </p>
 <hr>
 <p align="center">Feito com 🤍 por <a href="https://gui.dev.br">gsbenevides2</a></p>
+
+
+<h2>A implementar</h2>
+ - Recaptcha
+ - Autorização
+ - CSRF (Cross Site Resouce Forward)
