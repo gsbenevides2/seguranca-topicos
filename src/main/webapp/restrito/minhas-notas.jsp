@@ -3,9 +3,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Alterar senha</title>
+        <title>Minhas Notas</title>
     </head>
     <body>
-        <h1>Alterar senha</h1>
+        <h1>Minhas Notas</h1>
     </body>
 </html>

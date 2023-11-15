@@ -7,19 +7,19 @@ import java.util.Objects;
 
 @Entity
 public class ControleAcesso implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @ManyToOne(cascade=CascadeType.ALL)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Funcionalidade funcionalidade;
     private boolean permitir;
 
     public ControleAcesso() {
     }
-    
+
     public ControleAcesso(Funcionalidade funcionalidade) {
         this(funcionalidade, true);
     }
@@ -59,10 +59,10 @@ public class ControleAcesso implements Serializable {
             return false;
         }
         ControleAcesso other = (ControleAcesso) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        boolean sameFuncionalidade = this.funcionalidade.equals(other.funcionalidade);
+        boolean samePermissao = this.permitir == other.permitir;
+
+        return sameFuncionalidade && samePermissao;
     }
-    
+
 }

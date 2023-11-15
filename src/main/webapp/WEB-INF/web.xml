@@ -21,6 +21,15 @@
             <filter-name>GarantirAutenticacao</filter-name>
             <url-pattern>/restrito/*</url-pattern>
         </filter-mapping>
+        <filter>
+            <filter-name>GarantirAutentorizacao</filter-name>
+            <filter-class>seguranca.usuario.web.GarantirAutorizacao</filter-class>
+        </filter>
+        <filter-mapping>
+            <filter-name>GarantirAutentorizacao</filter-name>
+            <url-pattern>/restrito/*</url-pattern>
+        </filter-mapping>
+        
         <servlet>
             <servlet-name>AcessarSistema</servlet-name>
             <servlet-class>seguranca.usuario.web.AcessarSistema</servlet-class>

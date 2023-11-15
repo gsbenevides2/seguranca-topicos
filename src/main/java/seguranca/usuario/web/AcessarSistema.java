@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import seguranca.comum.LocalizadorServico;
-import seguranca.comum.RecaptchaValidator;
+import seguranca.comum.ValidarRecaptcha;
 
 public class AcessarSistema extends HttpServlet {
 
@@ -20,12 +20,14 @@ public class AcessarSistema extends HttpServlet {
         String responseToken = request.getParameter("g-recaptcha-response");
 
         AutenticarUsuario autenticarUsuario = LocalizadorServico.autenticarUsuario();
+        ValidarRecaptcha validarRecaptcha = LocalizadorServico.validarRecaptcha();
+
         if (!autenticarUsuario.executar(email, senha)) {
             response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + "/index.jsp?invalido=true"));
             return;
         }
 
-        if (!RecaptchaValidator.validate(responseToken)) {
+        if (!validarRecaptcha.executar(responseToken)) {
             response.sendRedirect(
                     response.encodeRedirectURL(request.getContextPath() + "/index.jsp?recaptcha_error=true"));
             return;

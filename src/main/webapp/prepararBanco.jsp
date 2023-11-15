@@ -18,36 +18,46 @@
 
             UsuarioRepositorio repositorio = LocalizadorServico.usuarioRepositorio();
             
-            Funcionalidade f1 = new Funcionalidade("Ver próprias notas");
-            Funcionalidade f2 = new Funcionalidade("Ver todas notas");
-            Funcionalidade f3 = new Funcionalidade("Lançar notas");
-            Funcionalidade f4 = new Funcionalidade("Revisar planos de ensino");
-
+            Funcionalidade f1 = new Funcionalidade("VER_PROPRIAS_NOTAS");
+            Funcionalidade f2 = new Funcionalidade("VER_TODAS_NOTAS");
+            Funcionalidade f3 = new Funcionalidade("LANCAR_NOTAS");
+            Funcionalidade f4 = new Funcionalidade("REVISAR_PLANOS_DE_ENSINO");
+            Funcionalidade f5 = new Funcionalidade("ACESSAR_PAINEL_PRINCIPAL");
+            
+            Papel usuario = new Papel("Usuario");
+            usuario.addPermissaoPara(f5);
+            
+            // Coordenador
             Papel coordenador = new Papel("Coordenador");
-            Papel professor = new Papel("Professor");
-            Papel aluno = new Papel("aluno");
-
+            coordenador.extendePermissoes(usuario);
             coordenador.addPermissaoPara(f2);
             coordenador.addPermissaoPara(f4);
+            
+            Usuario usCoordenador = new Usuario("coordenador@email.com", "abc12345");
+            usCoordenador.addPapel(coordenador);
 
+            // Professor
+            Papel professor = new Papel("Professor");
+            professor.extendePermissoes(usuario);
             professor.addPermissaoPara(f3);
 
+            Usuario usProfessor = new Usuario("professor@email.com", "abc12345");
+            usProfessor.addPapel(professor);
+
+            // Aluno
+            Papel aluno = new Papel("aluno");
+            aluno.extendePermissoes(usuario);
             aluno.addPermissaoPara(f1);
             
             Usuario usAluno = new Usuario("aluno@email.com", "abc12345");
             usAluno.setId(1L);
             usAluno.addPapel(aluno);
-
-            Usuario usProfessor = new Usuario("professor@email.com", "abc12345");
-            usProfessor.addPapel(professor);
-
-            Usuario usCoordenador = new Usuario("coordenador@email.com", "abc12345");
-            usCoordenador.addPapel(coordenador);
             
             repositorio.iniciarTransacao();
             repositorio.criar(usAluno);
             repositorio.criar(usProfessor);
             repositorio.criar(usCoordenador);
+
             repositorio.confirmarTransacao();
         %>
         <h1>Banco preparado!</h1>

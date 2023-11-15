@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.lang.StringBuffer;
 import java.io.InputStreamReader;
 
-public class RecaptchaValidator {
-    private static String secretToken = "6Lc7TuooAAAAAF18Nkc8QH4Xn_uFzp6qK_m5CQm8";
+public class ValidarRecaptchaGoogle implements ValidarRecaptcha {
+    private String secretToken = "6Lc7TuooAAAAAF18Nkc8QH4Xn_uFzp6qK_m5CQm8";
 
-    public static boolean validate(String responseToken) {
+    public boolean executar(String responseToken) {
         try {
             // Prepare Parameters
             Map<String, String> parameters = new HashMap<>();

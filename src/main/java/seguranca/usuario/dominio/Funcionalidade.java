@@ -6,33 +6,58 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Funcionalidade  implements Serializable {
+public class Funcionalidade implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
+    private String id;
+
     private String nome;
     private String descricao;
 
     public Funcionalidade() {
     }
-    public Funcionalidade(String nome) {
+
+    public Funcionalidade(String id, String nome, String descricao) {
+        setId(id);
         setNome(nome);
+        setDescricao(descricao);
+
+    }
+
+    public Funcionalidade(String id, String nome) {
+        this(id, nome, null);
+    }
+
+    public Funcionalidade(String id) {
+        this(id, null);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        Objects.requireNonNull(nome);
-        nome = nome.trim();
-        if(nome.isEmpty()) {
-            throw new IllegalArgumentException("O nome não pode ser vazio");
+    private void setId(String id) {
+        Objects.requireNonNull(id);
+        id = id.trim();
+        if (id.isEmpty()) {
+            throw new IllegalArgumentException("O id não pode ser vazio");
         }
-        this.nome = nome.toUpperCase();
+        this.id = id.toUpperCase();
+    }
+
+    public void setNome(String nome) {
+        if (nome != null) {
+            nome = nome.trim();
+            if (nome.isEmpty()) {
+                throw new IllegalArgumentException("O nome não pode ser vazio");
+            }
+        }
+        this.nome = nome;
+
     }
 
     public String getDescricao() {
@@ -40,34 +65,30 @@ public class Funcionalidade  implements Serializable {
     }
 
     public void setDescricao(String descricao) {
-        if(descricao != null) {
+        if (descricao != null) {
             descricao = descricao.trim();
-            if(descricao.isEmpty()) {
+            if (descricao.isEmpty()) {
                 throw new IllegalArgumentException("A descrição não pode ser vazia");
             }
         }
 
         this.descricao = descricao;
     }
-    
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        System.out.println(id.hashCode());
+        return id.hashCode();
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof Funcionalidade)) {
             return false;
         }
         Funcionalidade other = (Funcionalidade) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return this.id.equals(other.id);
     }
-    
+
 }

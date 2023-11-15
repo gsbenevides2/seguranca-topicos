@@ -2,9 +2,6 @@ package seguranca.infraestrutura.persistencia;
 
 import javax.persistence.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class JPAHelper {
 
     public static EntityManager getEntityManager() {
@@ -12,5 +9,5 @@ public class JPAHelper {
                 .createEntityManagerFactory("AplicacaoBancariaPU")
                 .createEntityManager();
     }
-    
+
 }

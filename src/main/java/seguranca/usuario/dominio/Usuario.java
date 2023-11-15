@@ -13,16 +13,17 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Column(length = 100, nullable = false)
     private String email;
     @Column(length = 255, nullable = false)
     private String senha;
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ControleAcesso> controlesAcesso = new HashSet<>();
-    
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+
+    @ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH,
+            CascadeType.PERSIST }, fetch = FetchType.LAZY)
     private Set<Papel> papeis = new HashSet<>();
 
     public Usuario() {
@@ -33,7 +34,7 @@ public class Usuario implements Serializable {
         setEmail(email);
         setSenha(senha);
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -65,7 +66,7 @@ public class Usuario implements Serializable {
     public void setControlesAcesso(Set<ControleAcesso> controlesAcesso) {
         this.controlesAcesso = controlesAcesso;
     }
-    
+
     public void addPapel(Papel papel) {
         this.papeis.add(papel);
     }
@@ -77,7 +78,7 @@ public class Usuario implements Serializable {
     private void setPapeis(Set<Papel> papeis) {
         this.papeis = papeis;
     }
-    
+
     public boolean temAcessoA(Funcionalidade funcionalidade) {
         Acessos acesso = this.controlesAcesso
                 .stream()
@@ -85,23 +86,23 @@ public class Usuario implements Serializable {
                 .map(it -> it.isPermitir() ? Acessos.PERMITIDO : Acessos.NEGADO)
                 .findFirst()
                 .orElse(Acessos.NAO_INFORMADO);
-        if(acesso == Acessos.NEGADO) {
+        if (acesso == Acessos.NEGADO) {
             return false;
         }
-        
+
         boolean algumPermitiu = false;
-        for(Papel papel : papeis) {
+        for (Papel papel : papeis) {
             Acessos temAcessoViaPapel = papel.temAcessoA(funcionalidade);
-            if(temAcessoViaPapel == Acessos.NEGADO) {
+            if (temAcessoViaPapel == Acessos.NEGADO) {
                 return false;
             } else if (temAcessoViaPapel == Acessos.PERMITIDO) {
                 algumPermitiu = true;
             }
         }
-        
+
         return algumPermitiu;
     }
-    
+
     public void addPermissaoPara(Funcionalidade funcionalidade) {
         this.controlesAcesso.add(new ControleAcesso(funcionalidade));
     }
@@ -109,15 +110,15 @@ public class Usuario implements Serializable {
     public void denyPermissaoPara(Funcionalidade funcionalidade) {
         this.controlesAcesso.add(new ControleAcesso(funcionalidade, false));
     }
-    
+
     public void addControleAcesso(ControleAcesso controleAcesso) {
         this.controlesAcesso.add(controleAcesso);
     }
-    
+
     public boolean removeControleAcesso(Funcionalidade funcionalidade) {
         return this.controlesAcesso.removeIf(it -> it.getFuncionalidade().equals(funcionalidade));
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -142,5 +143,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "seguranca.usuario.Usuario[ id=" + id + " ]";
     }
-    
+
 }

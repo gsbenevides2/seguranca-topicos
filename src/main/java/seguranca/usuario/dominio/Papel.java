@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,15 +15,15 @@ public class Papel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private String nome;
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ControleAcesso> controlesAcesso = new HashSet<>();
 
     public Papel() {
     }
-    
+
     public Papel(String nome) {
         setNome(nome);
     }
@@ -34,38 +35,52 @@ public class Papel implements Serializable {
     public void setNome(String nome) {
         Objects.requireNonNull(nome);
         nome = nome.trim();
-        if(nome.isEmpty()) {
+        if (nome.isEmpty()) {
             throw new IllegalArgumentException("O nome não pode ser vazio");
         }
         this.nome = nome.toUpperCase();
     }
-    
+
     public void addPermissaoPara(Funcionalidade funcionalidade) {
+        this.controlesAcesso.forEach(it -> {
+            System.out.println(it.getFuncionalidade().getId());
+        });
         this.controlesAcesso.add(new ControleAcesso(funcionalidade));
     }
 
     public void denyPermissaoPara(Funcionalidade funcionalidade) {
         this.controlesAcesso.add(new ControleAcesso(funcionalidade, false));
     }
-    
+
     public void addControleAcesso(ControleAcesso controleAcesso) {
         this.controlesAcesso.add(controleAcesso);
     }
-    
+
     public boolean removeControleAcesso(Funcionalidade funcionalidade) {
         return this.controlesAcesso.removeIf(it -> it.getFuncionalidade().equals(funcionalidade));
     }
-    
+
     public Acessos temAcessoA(Funcionalidade funcionalidade) {
-        return    
-            this.controlesAcesso
+        return this.controlesAcesso
                 .stream()
                 .filter(it -> it.getFuncionalidade().equals(funcionalidade))
                 .map(it -> it.isPermitir() ? Acessos.PERMITIDO : Acessos.NEGADO)
                 .findFirst()
                 .orElse(Acessos.NAO_INFORMADO);
     }
-    
+
+    public void extendePermissoes(Papel papel) {
+        Iterator<ControleAcesso> cA = papel.controlesAcesso.iterator();
+
+        while (cA.hasNext()) {
+            this.addControleAcesso(cA.next());
+        }
+    }
+
+    public Set<ControleAcesso> getControlesAcesso() {
+        return controlesAcesso;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -85,5 +100,5 @@ public class Papel implements Serializable {
         }
         return true;
     }
-    
+
 }
